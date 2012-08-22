@@ -9,7 +9,10 @@ exports.attach = function (options) {
 
   if (typeof options === 'string') {
     var split = options.split(':');
-    options = {host: split[0], port: split[1]};
+    options = {host: split[0]};
+    if (split[1].match(/^\d+$/)) {
+      options.port = parseInt(split[1], 10);
+    }
   }
   else if (typeof options === 'number') {
     options = {port: options};
@@ -46,7 +49,8 @@ exports.attach = function (options) {
       , ev = args.shift()
 
     try {
-      args = {args: hydration.dehydrate(args)};
+      args = {args: args}; // (dehydration only works on objects)
+      args = hydration.dehydrate(args);
       client.publish(ev, JSON.stringify(args));
     }
     catch (e) {
