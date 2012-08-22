@@ -1,8 +1,10 @@
 var redis = require('haredis')
   , hydration = require('hydration')
+  , EventEmitter = require('events').EventEmitter
 
 exports.attach = function (options) {
   var amino = this
+    , subscriber = new EventEmitter
     , client
 
   if (typeof options === 'string') {
@@ -24,17 +26,48 @@ exports.attach = function (options) {
     client = redis.createClient(options.port, options.host, options);
   }
 
+  subscriber.setMaxListeners(0);
+
   client.on('error', amino.emit.bind(amino, 'error'));
 
-  client.on('message', function (channel, packet) {
-
+  client.on('message', function (ev, packet) {
+    try {
+      packet = JSON.parse(packet);
+      packet = hydration.hydrate(packet);
+      subscriber.emit.apply(subscriber, [ev].concat(packet.args));
+    }
+    catch (e) {
+      amino.emit('error', e);
+    }
   });
 
-  this.publish = function () {
+  amino.publish = function () {
     var args = Array.prototype.slice.call(arguments)
       , ev = args.shift()
 
-    args = hydration.dehydrate(args);
+    try {
+      args = {args: hydration.dehydrate(args)};
+      client.publish(ev, JSON.stringify(args));
+    }
+    catch (e) {
+      amino.emit('error', e);
+    }
+  };
 
+  amino.subscribe = function (ev, handler) {
+    subscriber.on(ev, handler);
+    client.subscribe(ev);
+  };
+
+  amino.unsubscribe = function (ev, handler) {
+    if (handler) {
+      subscriber.removeListener(ev, handler);
+    }
+    else {
+      subscriber.removeAllListeners(ev);
+    }
+    if (subscriber.listeners(ev).length === 0) {
+      client.unsubscribe(ev);
+    }
   };
 };
