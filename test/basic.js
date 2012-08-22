@@ -1,12 +1,5 @@
-var amino = require('amino')
-  , assert = require('assert')
-
 describe('basic test', function () {
   it('attaches', function () {
-    amino
-      .use(require('../'), "localhost:6379")
-      .init({redis: false, request: false, service: false});
-
     assert.equal(typeof amino.publish, 'function');
     assert.equal(typeof amino.subscribe, 'function');
   });

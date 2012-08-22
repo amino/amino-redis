@@ -32,6 +32,8 @@ exports.attach = function (options) {
   subscriber.setMaxListeners(0);
 
   client.on('error', amino.emit.bind(amino, 'error'));
+  client.on('subscribe', amino.emit.bind(amino, 'subscribe'));
+  client.on('unsubscribe', amino.emit.bind(amino, 'unsubscribe'));
 
   client.on('message', function (ev, packet) {
     try {
