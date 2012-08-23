@@ -18,6 +18,6 @@
   },
   "devDependencies": {
     "mocha": "*",
-    "amino": "1.0.0-alpha"
+    "amino": "~1.0.0"
   }
 }
