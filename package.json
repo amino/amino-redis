@@ -1,6 +1,6 @@
 {
   "name": "amino-redis",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Redis plugin for amino 1.x",
   "main": "index.js",
   "scripts": {
@@ -10,7 +10,21 @@
     "type": "git",
     "url": "https://github.com/amino/amino-redis.git"
   },
-  "author": "Carlos Rodriguez",
+  "homepage": "https://github.com/amino/amino",
+  "keywords": [
+    "load-balancing",
+    "failover",
+    "cluster",
+    "scalability",
+    "performance",
+    "service",
+    "pub/sub",
+    "high-availability",
+    "cloud",
+    "redundancy",
+    "ipc"
+  ],
+  "author": "Carlos Rodriguez <carlos@s8f.org> (http://s8f.org/)",
   "license": "MIT",
   "dependencies": {
     "haredis": "~0.2.8",
@@ -19,5 +33,8 @@
   "devDependencies": {
     "mocha": "*",
     "amino": "~1.0.0"
+  },
+  "engines": {
+    "node": ">= 0.6.0"
   }
 }
