@@ -17,7 +17,7 @@ exports.attach = function (options) {
   else if (typeof options === 'number') {
     options = {port: options};
   }
-  else if (options['0']) {
+  else if (options && options['0']) {
     // Support for nodes as object, like optimist might produce.
     var nodes = [];
     Object.keys(options).forEach(function (k) {
