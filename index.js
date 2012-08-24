@@ -17,6 +17,9 @@ exports.attach = function (options) {
   else if (typeof options === 'number') {
     options = {port: options};
   }
+  else if (Array.isArray(options)) {
+    options = {nodes: options};
+  }
   else {
     options || (options = {host: 'localhost', port: 6379});
   }
