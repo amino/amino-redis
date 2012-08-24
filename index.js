@@ -10,12 +10,23 @@ exports.attach = function (options) {
   if (typeof options === 'string') {
     var split = options.split(':');
     options = {host: split[0]};
-    if (split[1].match(/^\d+$/)) {
+    if (split[1] && split[1].match(/^\d+$/)) {
       options.port = parseInt(split[1], 10);
     }
   }
   else if (typeof options === 'number') {
     options = {port: options};
+  }
+  else if (options['0']) {
+    // Support for nodes as object, like optimist might produce.
+    var nodes = [];
+    Object.keys(options).forEach(function (k) {
+      if (k.match(/^\d+$/)) {
+        nodes.push(options[k]);
+        delete options[k];
+      }
+    });
+    options.nodes = nodes;
   }
   else if (Array.isArray(options)) {
     options = {nodes: options};
