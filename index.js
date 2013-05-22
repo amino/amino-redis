@@ -37,10 +37,10 @@ exports.attach = function (options) {
 
   if (options.nodes) {
     // haredis node list
-    client = redis.createClient(options.nodes, options);
+    amino.redis = client = redis.createClient(options.nodes, options);
   }
   else {
-    client = redis.createClient(options.port, options.host, options);
+    amino.redis = client = redis.createClient(options.port, options.host, options);
   }
 
   subscriber.setMaxListeners(0);

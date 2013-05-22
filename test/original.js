@@ -47,4 +47,9 @@ describe('original pub/sub tests', function () {
       done();
     });
   });
+
+  it('exposes redis client', function () {
+    assert(amino.redis);
+    assert(amino.redis.connected);
+  });
 });
